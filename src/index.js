@@ -1,38 +1,38 @@
-let myLibrary = [];
+let myProjects = [];
 
 const popUpForm = document.querySelector('#popUp');
-const newBookBtn = document.querySelector('#newBookBtn');
-newBookBtn.addEventListener('click', () => popUpForm.style.display = 'block');
+const newProjectBtn = document.querySelector('#newProjectBtn');
+newProjectBtn.addEventListener('click', () => popUpForm.style.display = 'block');
 
 const closeBtn = document.getElementsByTagName('span')[0];
 closeBtn.addEventListener('click', () => popUpForm.style.display = 'none');
 
-const book_list = document.querySelector('#book-list');
+const project_list = document.querySelector('#project-list');
 const titleInput = document.querySelector("#title");
 const authorInput = document.querySelector("#author");
-const pagesInput = document.querySelector("#pages");
+const dateInput = document.querySelector("#date");
 
-class Book {
-  constructor(title, author, pages) {
+class Project {
+  constructor(title, author, date) {
     this.title = title;
     this.author = author;
-    this.pages = pages;
+    this.date = date;
   } 
 }
 
-function addBook() {
-  const book = new Book (
+function addProject() {
+  const project = new Project (
     document.getElementById('title').value,
     document.getElementById('author').value,
-    document.getElementById('pages').value 
+    document.getElementById('date').value 
   );
-  myLibrary.push(book);
+  myProjects.push(project);
 }
 
-function showBook(){
- myLibrary.forEach(function(item, index){
-   let bookIndex = myLibrary.length - 1;
-   if (index == bookIndex) {
+function showProject(){
+ myProjects.forEach(function(item, index){
+   let projectIndex = myProjects.length - 1;
+   if (index == projectIndex) {
     let card = document.createElement("div");
     card.setAttribute("id", "card");
     card.className = "card";
@@ -43,47 +43,45 @@ function showBook(){
     let theAuthor = document.createElement("div");
     theAuthor.textContent += (`Author: ${item.author}`);
 
-    let thePages = document.createElement("div");
-    thePages.textContent += (`Pages: ${item.pages}`);
+    let theDate = document.createElement("div");
+    theDate.textContent += (`Date: ${item.date}`);
 
     const remove_btn = document.createElement("button");
-    remove_btn.setAttribute('data-attribute', bookIndex);
+    remove_btn.setAttribute('data-attribute', projectIndex);
     remove_btn.className = "button";
     remove_btn.textContent = "X";
-    remove_btn.addEventListener('click', removeBook);
+    remove_btn.addEventListener('click', removeProject);
 
-    const read_btn = document.createElement("button");
-    read_btn.setAttribute('data-attribute', bookIndex);
-    read_btn.className = "button";
-    read_btn.textContent = "Not Read";
-    read_btn.addEventListener('click', readIt);
+    const more_btn = document.createElement("button");
+    more_btn.setAttribute('data-attribute', projectIndex);
+    more_btn.className = "button";
+    more_btn.textContent = "More";
+    more_btn.addEventListener('click', getMoreInfo);
 
     card.appendChild(theTitle);
     card.appendChild(theAuthor);
-    card.appendChild(thePages);
+    card.appendChild(theDate);
     card.appendChild(remove_btn);
-    card.appendChild(read_btn);
+    card.appendChild(more_btn);
 
-    book_list.appendChild(card);
+    project_list.appendChild(card);
    }
  });
 }
 
-function removeBook(e) {
+function removeProject(e) {
   e.target.parentElement.remove();
-    myLibrary.splice(e.target, 1);
+    myProjects.splice(e.target, 1);
 }
 
-function readIt(e) {
-  if (e.target.textContent == "Not Read") {
-    e.target.textContent = "Read";
-  } else e.target.textContent = "Not Read";
+function getMoreInfo(e) {
+  // Code goes here
 }
 
-function submitBook() {
-  if (titleInput.value.length !== 0 && authorInput.value.length !== 0 && pagesInput.value >= 1) {
-    addBook();
-    showBook();
+function submitProject() {
+  if (titleInput.value.length !== 0 && authorInput.value.length !== 0 && dateInput.value >= 1) {
+    addProject();
+    showProject();
     document.querySelector('form').reset();
   }
 }
@@ -91,6 +89,6 @@ function submitBook() {
 document.addEventListener('DOMContentLoaded', ()=> {
   document.getElementById('submit').addEventListener('click', (e) => {
     e.preventDefault();
-    submitBook();
+    submitProject();
   });
 });

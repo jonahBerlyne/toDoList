@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
  <meta charset="UTF-8">
  <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,20 +9,21 @@
  <title>To Do List</title>
  <script src="main.js" defer></script>
 </head>
+
 <body>
+ <div>Logo Goes Here</div>
  <div class="container">
-  <div>Logo Goes Here</div>
   <br>
   <br>
-  <div id="newBook">
-   <button class="button" id="newBookBtn">Add New Book</button>
+  <div id="newProject">
+   <button class="button" id="newProjectBtn">Add New Project</button>
   </div>
   <br>
   <br>
   <div id="popUp">
    <form action="" name="form" class="form">
     <div class="form-header">
-     <h3>Enter a new book:</h3>
+     <h3>Create a new project:</h3>
      <span class="close">&times;</span>
     </div>
     <div>
@@ -35,8 +37,8 @@
     </div>
     <br>
     <div>
-     <label for="pages">Pages:</label>
-     <input type="number" name="pages" id="pages">
+     <label for="date">Date:</label>
+     <input type="number" name="date" id="date" placeholder="mm/dd/yyyy">
     </div>
     <br>
     <button type="submit" class="button" id="submit">Submit</button>
@@ -44,10 +46,11 @@
   </div>
   <br>
   <br>
-  <div class="books">
-   <h3>Books:</h3>
-   <div class="book-list" id="book-list"></div>
+  <div class="projects">
+   <h3>Projects:</h3>
+   <div class="project-list" id="project-list"></div>
   </div>
  </div>
 </body>
+
 </html>
