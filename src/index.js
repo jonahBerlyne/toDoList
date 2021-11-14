@@ -79,7 +79,7 @@ function getMoreInfo(e) {
 }
 
 function submitProject() {
-  if (titleInput.value.length !== 0 && authorInput.value.length !== 0 && dateInput.value >= 1) {
+  if (titleInput.value.length !== 0 && authorInput.value.length !== 0 && dateInput.value !== "") {
     addProject();
     showProject();
     document.querySelector('form').reset();
