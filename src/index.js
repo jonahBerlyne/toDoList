@@ -9,22 +9,35 @@ closeBtn.addEventListener('click', () => popUpForm.style.display = 'none');
 
 const project_list = document.querySelector('#project-list');
 const titleInput = document.querySelector("#title");
-const authorInput = document.querySelector("#author");
 const dateInput = document.querySelector("#date");
+let priorityValue;
+const descriptionInput = document.querySelector("#description");
 
 class Project {
-  constructor(title, author, date) {
+  constructor(title, date, priority, description) {
     this.title = title;
-    this.author = author;
     this.date = date;
+    this.priority = priority;
+    this.description = description;
   } 
+}
+
+function selectPriority() {
+  const needs = document.querySelectorAll('input[name="priority"]');
+  for (const need of needs) {
+    if (need.checked) {
+      priorityValue = need.value;
+      break;
+    }
+  }
 }
 
 function addProject() {
   const project = new Project (
     document.getElementById('title').value,
-    document.getElementById('author').value,
-    document.getElementById('date').value 
+    document.getElementById('date').value,
+    priorityValue, 
+    document.getElementById('description').value
   );
   myProjects.push(project);
 }
@@ -40,11 +53,15 @@ function showProject(){
     let theTitle = document.createElement("div");
     theTitle.textContent += (`Title: ${item.title}`);
 
-    let theAuthor = document.createElement("div");
-    theAuthor.textContent += (`Author: ${item.author}`);
-
+    
     let theDate = document.createElement("div");
     theDate.textContent += (`Date: ${item.date}`);
+
+    let thePriority = document.createElement("div");
+    thePriority.textContent += (`Priority: ${item.priority}`);
+    
+    let theDescription = document.createElement("div");
+    theDescription.textContent += (`${item.description}`);
 
     const remove_btn = document.createElement("button");
     remove_btn.setAttribute('data-attribute', projectIndex);
@@ -59,8 +76,13 @@ function showProject(){
     more_btn.addEventListener('click', getMoreInfo);
 
     card.appendChild(theTitle);
-    card.appendChild(theAuthor);
     card.appendChild(theDate);
+    card.appendChild(thePriority);
+
+    let br = document.createElement("br");
+    card.appendChild(br);
+
+    card.appendChild(theDescription);
     card.appendChild(remove_btn);
     card.appendChild(more_btn);
 
@@ -79,16 +101,18 @@ function getMoreInfo(e) {
 }
 
 function submitProject() {
-  if (titleInput.value.length !== 0 && authorInput.value.length !== 0 && dateInput.value !== "") {
+  if (titleInput.value.length !== 0 && descriptionInput.value.length !== 0 && (priorityValue !== undefined) && dateInput.value !== "") {
     addProject();
     showProject();
     document.querySelector('form').reset();
+    priorityValue = undefined;
   }
 }
 
 document.addEventListener('DOMContentLoaded', ()=> {
   document.getElementById('submit').addEventListener('click', (e) => {
     e.preventDefault();
+    selectPriority();
     submitProject();
   });
 });
