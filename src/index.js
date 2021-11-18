@@ -13,12 +13,17 @@ const dateInput = document.querySelector("#date");
 let priorityValue;
 const descriptionInput = document.querySelector("#description");
 
+const checklist = document.querySelector("#checklist");
+const checklistBtn = document.querySelector("#checklistBtn");
+checklistBtn.addEventListener('click', addThings);
+
 class Project {
-  constructor(title, date, priority, description) {
+  constructor(title, date, priority, description, things) {
     this.title = title;
     this.date = date;
     this.priority = priority;
     this.description = description;
+    this.things = things;
   } 
 }
 
@@ -32,12 +37,33 @@ function selectPriority() {
   }
 }
 
+function addThings(e) {
+  e.preventDefault();
+  const checklistInput = document.querySelector("#checklistInput");
+
+  if (checklistInput.value.length !== 0) {
+    const li = document.createElement("li");
+    li.appendChild(document.createTextNode(`${checklistInput.value}`));
+    checklist.appendChild(li);
+    checklistInput.value = "";
+  }
+}
+
+function showThings() {
+  const lis = document.querySelectorAll("li");
+
+  for (const li of lis) {
+    document.createTextNode(li);
+  }
+}
+
 function addProject() {
   const project = new Project (
     document.getElementById('title').value,
     document.getElementById('date').value,
     priorityValue, 
-    document.getElementById('description').value
+    document.getElementById('description').value,
+    checklist
   );
   myProjects.push(project);
 }
@@ -63,6 +89,14 @@ function showProject(){
     let theDescription = document.createElement("div");
     theDescription.textContent += (`${item.description}`);
 
+    let theChecklist = document.createElement("div");
+    //let checklistTitle = document.createElement("h5");
+    //checklistTitle.textContent += "Things:"
+    //theChecklist.appendChild(checklistTitle);
+    showThings();
+    theChecklist.textContent += (`${item.things}`);
+    //console.log(item.things);
+
     const remove_btn = document.createElement("button");
     remove_btn.setAttribute('data-attribute', projectIndex);
     remove_btn.className = "button";
@@ -83,6 +117,7 @@ function showProject(){
     card.appendChild(br);
 
     card.appendChild(theDescription);
+    card.appendChild(theChecklist);
     card.appendChild(remove_btn);
     card.appendChild(more_btn);
 
@@ -101,7 +136,7 @@ function getMoreInfo(e) {
 }
 
 function submitProject() {
-  if (titleInput.value.length !== 0 && descriptionInput.value.length !== 0 && (priorityValue !== undefined) && dateInput.value !== "") {
+  if (titleInput.value.length !== 0 && descriptionInput.value.length !== 0 && (priorityValue !== undefined) && dateInput.value !== "" && checklist) {
     addProject();
     showProject();
     document.querySelector('form').reset();
