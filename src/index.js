@@ -1,153 +1,164 @@
-let myProjects = [];
+const toDoInput = document.querySelector("#toDoInput");
+const addBtn = document.querySelector("#addBtn");
+const toDoList = document.querySelector("#toDoList");
 
-const popUpForm = document.querySelector('#popUp');
-const newProjectBtn = document.querySelector('#newProjectBtn');
-newProjectBtn.addEventListener('click', () => popUpForm.style.display = 'block');
+console.log(typeof addBtn);
+addBtn.addEventListener("click", addToDos);
 
-const closeBtn = document.getElementsByTagName('span')[0];
-closeBtn.addEventListener('click', () => popUpForm.style.display = 'none');
 
-const project_list = document.querySelector('#project-list');
-const titleInput = document.querySelector("#title");
-const dateInput = document.querySelector("#date");
-let priorityValue;
-const descriptionInput = document.querySelector("#description");
+let toDos = [];
 
-const checklist = document.querySelector("#checklist");
-const checklistBtn = document.querySelector("#checklistBtn");
-checklistBtn.addEventListener('click', addThings);
+function mapToDos(element) {
+  const items = toDos.map(toDo => `<li>${toDo}</li>`).join(' ');
 
-class Project {
-  constructor(title, date, priority, description, things) {
-    this.title = title;
-    this.date = date;
-    this.priority = priority;
-    this.description = description;
-    this.things = things;
-  } 
+  element.innerHTML += items;
 }
+
+function addToDos() {
+  if (toDoInput.value == "") return;
+
+  toDos.push(toDoInput.value);
+
+  if (toDoList.innerHTML !== "") toDoList.innerHTML = "";
+
+  mapToDos(toDoList);
+
+  toDoInput.value = "";
+}
+
+let priorityValue;
 
 function selectPriority() {
   const needs = document.querySelectorAll('input[name="priority"]');
-  for (const need of needs) {
+   for (const need of needs) {
     if (need.checked) {
       priorityValue = need.value;
       break;
     }
+   }
+}
+
+let itemAdded = false;
+
+const AddItem = (title, date, description, toDoValues) => {
+
+  const divs = document.querySelector("#divs");
+
+  function makeId() {
+    let result = '';
+    let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let charactersLength = characters.length;
+    for (let i = 0; i < 15; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
   }
-}
 
-function addThings(e) {
-  e.preventDefault();
-  const checklistInput = document.querySelector("#checklistInput");
+  let itemId = makeId();
 
-  if (checklistInput.value.length !== 0) {
-    const li = document.createElement("li");
-    li.appendChild(document.createTextNode(`${checklistInput.value}`));
-    checklist.appendChild(li);
-    checklistInput.value = "";
-  }
-}
+  function addDiv() {
 
-function showThings() {
-  const lis = document.querySelectorAll("li");
+    let found = false;
 
-  for (const li of lis) {
-    document.createTextNode(li);
-  }
-}
+    for (let i = 0; i < divs.length; i++) {
+      if (divs[i].title == title && divs[i].date) {
+        found = true;
+        break;
+      }
+    }
 
-function addProject() {
-  const project = new Project (
-    document.getElementById('title').value,
-    document.getElementById('date').value,
-    priorityValue, 
-    document.getElementById('description').value,
-    checklist
-  );
-  myProjects.push(project);
-}
+    if (found) {
+      found = false;
+      alert("Cannot add repeat items");
+      return;
+    }
 
-function showProject(){
- myProjects.forEach(function(item, index){
-   let projectIndex = myProjects.length - 1;
-   if (index == projectIndex) {
-    let card = document.createElement("div");
-    card.setAttribute("id", "card");
-    card.className = "card";
+    const div = document.createElement("div");
+
+    div.classList.add("div");
 
     let theTitle = document.createElement("div");
-    theTitle.textContent += (`Title: ${item.title}`);
+    theTitle.textContent = (`Title: ${title}`);
 
-    
     let theDate = document.createElement("div");
-    theDate.textContent += (`Date: ${item.date}`);
+    theDate.textContent = (`Date: ${date}`);
 
     let thePriority = document.createElement("div");
-    thePriority.textContent += (`Priority: ${item.priority}`);
-    
+    thePriority.textContent = (`Priority: ${priorityValue}`);
+
     let theDescription = document.createElement("div");
-    theDescription.textContent += (`${item.description}`);
+    theDescription.textContent = (`${description}`);
 
-    let theChecklist = document.createElement("div");
-    //let checklistTitle = document.createElement("h5");
-    //checklistTitle.textContent += "Things:"
-    //theChecklist.appendChild(checklistTitle);
-    showThings();
-    theChecklist.textContent += (`${item.things}`);
-    //console.log(item.things);
+    div.appendChild(theTitle);
+    div.appendChild(theDate);
+    div.appendChild(thePriority);
+    div.appendChild(theDescription);
 
-    const remove_btn = document.createElement("button");
-    remove_btn.setAttribute('data-attribute', projectIndex);
-    remove_btn.className = "button";
-    remove_btn.textContent = "X";
-    remove_btn.addEventListener('click', removeProject);
+    mapToDos(div);
 
-    const more_btn = document.createElement("button");
-    more_btn.setAttribute('data-attribute', projectIndex);
-    more_btn.className = "button";
-    more_btn.textContent = "More";
-    more_btn.addEventListener('click', getMoreInfo);
+    divs.appendChild(div);
 
-    card.appendChild(theTitle);
-    card.appendChild(theDate);
-    card.appendChild(thePriority);
+    itemAdded = true;
 
-    let br = document.createElement("br");
-    card.appendChild(br);
+  }
 
-    card.appendChild(theDescription);
-    card.appendChild(theChecklist);
-    card.appendChild(remove_btn);
-    card.appendChild(more_btn);
 
-    project_list.appendChild(card);
-   }
- });
-}
+  function addToLocalStorage() {
+    let item = {};
+    const key = "key";
+    item[key] = itemId;
+    const titleData = "title";
+    item[titleData] = title;
+    const dateData = "date";
+    item[dateData] = date;
+    const descriptionData = "description";
+    item[descriptionData] = description;
+    const priorityData = "priority";
+    item[priorityData] = priorityValue;
+    const toDosData = "toDos";
+    item[toDosData] = toDoValues;
+    localStorage.setItem(itemId, JSON.stringify(item));
+  }
 
-function removeProject(e) {
-  e.target.parentElement.remove();
-    myProjects.splice(e.target, 1);
-}
-
-function getMoreInfo(e) {
-  // Code goes here
-}
-
-function submitProject() {
-  if (titleInput.value.length !== 0 && descriptionInput.value.length !== 0 && (priorityValue !== undefined) && dateInput.value !== "" && checklist) {
-    addProject();
-    showProject();
-    document.querySelector('form').reset();
+  function cleanUp() {
+    title = "";
+    date = "";
+    description = "";
     priorityValue = undefined;
+    toDoList.innerHTML = "";
+    toDoValues = [];
+    itemAdded = false;
+  }
+
+  return {
+    addDiv: addDiv,
+    addToLocalStorage: addToLocalStorage,
+    cleanUp: cleanUp
   }
 }
 
-document.addEventListener('DOMContentLoaded', ()=> {
-  document.getElementById('submit').addEventListener('click', (e) => {
-    e.preventDefault();
-    selectPriority();
-    submitProject();
-  });
-});
+const titleInput = document.querySelector("#title");
+const dateInput = document.querySelector("#date");
+const descriptionInput = document.querySelector("#description");
+const submitBtn = document.querySelector("#submitBtn");
+submitBtn.addEventListener("click", submitItem);
+
+function submitItem(e) {
+  e.preventDefault();
+
+  selectPriority();
+
+  if (titleInput.value.length === 0 || descriptionInput.value.length === 0 || dateInput.value == '' || priorityValue == undefined || toDos == []) {
+    alert("All inputs need to be filled in.");
+    return;
+  }
+
+  let newItem = AddItem(titleInput.value, dateInput.value, descriptionInput.value, toDos);
+
+  newItem.addDiv();
+
+  if (!itemAdded) return;
+
+  newItem.addToLocalStorage();
+  newItem.cleanUp();
+}

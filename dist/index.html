@@ -1,70 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
- <meta charset="UTF-8">
- <meta http-equiv="X-UA-Compatible" content="IE=edge">
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <link rel="stylesheet" href="styles.css">
- <title>To Do List</title>
- <script src="main.js" defer></script>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width">
+ <title>repl.it</title>
+ <script src="main.js"></script>
+ <link href="styles.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
- <div>Logo Goes Here</div>
- <div class="container">
+ <form action="">
+  <label for="title">Title:</label>
+  <input type="text" name="title" id="title">
   <br>
+  <label for="date">Date:</label>
+  <input type="date" name="date" id="date">
   <br>
-  <div id="newProject">
-   <button class="button" id="newProjectBtn">Add New Project</button>
-  </div>
+  <label for="priority">Priority:</label>
+  <input type="radio" name="priority" id="priority" value="Urgent"><label for="priority">Urgent</label>
+  <input type="radio" name="priority" id="priority" value="Small"><label for="priority">Small</label>
   <br>
+  <label for="description">Description:</label>
   <br>
-  <div id="popUp">
-   <form action="" name="form" class="form">
-    <div class="form-header">
-     <h3>Create a new project:</h3>
-     <span class="close">&times;</span>
-    </div>
-    <div>
-     <label for="title">Title:</label>
-     <input type="text" name="title" id="title">
-    </div>
-    <br>
-    <div>
-     <label for="date">Date:</label>
-     <input type="date" name="date" id="date">
-    </div>
-    <br>
-    <div>
-     <label for="priority">Priority:</label>
-     <input type="radio" id="priority" value="Urgent" name="priority"><label for="priority">Urgent</label> 
-     <input type="radio" id="priority" value="Small" name="priority"><label for="priority">Small</label>
-    </div>
-    <br>
-    <div>
-     <label for="description">Description:</label>
-     <br>
-     <textarea name="description" id="description" cols="30" rows="10"></textarea>
-    </div>
-    <br>
-    <div>
-     <label for="">Things:</label>
-     <input type="text" id="checklistInput">
-     <button id="checklistBtn">+</button>
-     <ul id="checklist"></ul>
-    </div>
-    <!-- <br> -->
-    <button type="submit" class="button" id="submit">Submit</button>
-   </form>
-  </div>
+  <textarea name="description" id="description" cols="30" rows="10"></textarea>
   <br>
-  <br>
-  <div class="projects">
-   <h3>Projects:</h3>
-   <div class="project-list" id="project-list"></div>
-  </div>
- </div>
+  <label for="toDoInput">To Dos:</label>
+  <input type="text" id="toDoInput">
+  <button type="button" id="addBtn">+</button>
+  <button type="submit" id="submitBtn">Submit</button>
+ </form>
+ <ul id="toDoList"></ul>
+ <div id="divs" class="divs"></div>
 </body>
 
 </html>

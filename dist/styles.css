@@ -1,44 +1,9 @@
-.button {
- cursor: pointer;
+.divs {
+  display: flex;
+  gap: 20px;
 }
 
-#popUp {
- display: none;
-}
-
-.form {
- border: 1px solid black;
- padding: 5px;
-}
-
-.form-header {
- display: flex;
- align-items: center;
- justify-content: space-between;
-}
-
-.close {
- display: flex; 
- justify-content: flex-end;
-}
-
-.close:hover {
- color: red;
- cursor: pointer;
-}
-
-.projects {
- border: 1px solid black;
- padding: 20px;
-}
-
-.project-list {
- display: flex;
- flex-wrap: wrap;
- gap: 5px;
-}
-
-.card {
- border: 1px solid black;
- padding: 50px;
+.div {
+  border: 1px solid black;
+  padding: 20px;
 }
