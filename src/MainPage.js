@@ -1,5 +1,3 @@
-// import runFunctionality from "./ToDos";
-
 export default function showWebsite() {
  const content = document.getElementById("content");
  content.appendChild(showMain());
@@ -17,27 +15,20 @@ function runToDos() {
 
   function addToDos() {
     if (toDoInput.value == "") return;
-
     if (toDos.includes(toDoInput.value)) {
      alert("You can't add duplicate items.");
      return;
     }
-
     toDos.push(toDoInput.value);
-
     if (toDoList.innerHTML !== "") toDoList.innerHTML = "";
-
-    mapToDos(toDoList);
-
+    mapToDos(toDos, toDoList);
     toDoInput.value = "";
-    console.log(toDos);
   }
 
   let toDos = [];
 
-  function mapToDos(element) {
-    const items = toDos.map(toDo => `<li>${toDo}</li>`).join(' ');
-
+  function mapToDos(tasks, element) {
+    const items = tasks.map(task => `<li>${task}</li>`).join(' ');
     element.innerHTML += items;
   }
 
@@ -53,11 +44,12 @@ function runToDos() {
      }
   }
 
-   let itemAdded = false;
+  let itemAdded = false;
+  let items = [];
 
-   const AddItem = (title, date, description, toDoValues) => {
+  const AddItem = (title, date, description) => {
 
-    const toDoDivs = document.querySelector("#divs");
+    const toDoDivs = document.querySelector("#toDoDivs");
 
     function makeId() {
        let result = '';
@@ -71,52 +63,63 @@ function runToDos() {
 
     let itemId = makeId();
 
-    function addDiv() {
-
-       // let found = false;
-
-       // for (let i = 0; i < toDoDivs.length; i++) {
-       //   if (toDoDivs[i].title == title && toDoDivs[i].date) {
-       //     found = true;
-       //     break;
-       //   }
-       // }
-
-       // if (found) {
-       //   found = false;
-       //   alert("Cannot add repeat items");
-       //   return;
-       // }
-
-       const div = document.createElement("div");
-
-       div.classList.add("toDoDiv");
-
-       let theTitle = document.createElement("div");
-       theTitle.textContent = (`Title: ${title}`);
-
-       let theDate = document.createElement("div");
-       theDate.textContent = (`Date: ${date}`);
-
-       let thePriority = document.createElement("div");
-       thePriority.textContent = (`Priority: ${priorityValue}`);
-
-       let theDescription = document.createElement("div");
-       theDescription.textContent = (`${description}`);
-
-       div.appendChild(theTitle);
-       div.appendChild(theDate);
-       div.appendChild(thePriority);
-       div.appendChild(theDescription);
-
-       mapToDos(div);
-
-       toDoDivs.appendChild(div);
-
-       itemAdded = true;
-
+    function addItem() {
+     let found = false;
+     for (let i = 0; i < items.length; i++) {
+      if (items[i].title == title && items[i].date == date) {
+       found = true;
+       break;
+      }
+     }
+     if (found) {
+      found = false;
+      alert("Cannot add repeat items");
+      return;
+     }
+     let item = [];
+     const itemTitle = "title";
+     item[itemTitle] = title;
+     const itemDate = "date";
+     item[itemDate] = date;
+     const itemDescription = "description";
+     item[itemDescription] = description;
+     const itemPriority = "priority";
+     item[itemPriority] = priorityValue;
+     const itemToDos = "toDos";
+     item[itemToDos] = toDos;
+     items.push(item);
+     mapToDoDivs();
+     itemAdded = true;
     }
 
+    
+    function mapToDoDivs() {
+     toDoDivs.innerHTML = "";
+     items.map(item => {
+      const div = document.createElement("div");
+      div.classList.add("toDoDiv");
+  
+      let theTitle = document.createElement("div");
+      theTitle.textContent = (`Title: ${item.title}`);
+  
+      let theDate = document.createElement("div");
+      theDate.textContent = (`Date: ${item.date}`);
+  
+      let thePriority = document.createElement("div");
+      thePriority.textContent = (`Priority: ${item.priority}`);
+  
+      let theDescription = document.createElement("div");
+      theDescription.textContent = (`${item.description}`);
+  
+      div.appendChild(theTitle);
+      div.appendChild(theDate);
+      div.appendChild(thePriority);
+      div.appendChild(theDescription);
+
+      mapToDos(item.toDos, div);
+      toDoDivs.appendChild(div);
+     });
+    }
 
      // function addToLocalStorage() {
      //   let item = {};
@@ -136,19 +139,18 @@ function runToDos() {
      // }
 
     function cleanUp() {
+       document.querySelector('form').reset();
        title = "";
        date = "";
        description = "";
        priorityValue = undefined;
        toDoList.innerHTML = "";
-       toDoValues = [];
+       toDos = [];
        itemAdded = false;
+       console.log(items);
     }
 
-    return {
-       addDiv,
-       cleanUp
-    }
+    return { addItem, cleanUp }
    }
 
    const titleInput = document.querySelector("#title");
@@ -159,20 +161,14 @@ function runToDos() {
 
    function submitItem(e) {
      e.preventDefault();
-
      selectPriority();
-
      if (titleInput.value.length === 0 || descriptionInput.value.length === 0 || dateInput.value == '' || priorityValue == undefined || toDos.length === 0) {
        alert("All inputs need to be filled in.");
        return;
      }
-
-     let newItem = AddItem(titleInput.value, dateInput.value, descriptionInput.value, toDos);
-
-     newItem.addDiv();
-
+     let newItem = AddItem(titleInput.value, dateInput.value, descriptionInput.value);
+     newItem.addItem();
      if (!itemAdded) return;
-
      // newItem.addToLocalStorage();
      newItem.cleanUp();
    }
