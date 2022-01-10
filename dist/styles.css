@@ -1,9 +1,9 @@
-.divs {
+.toDoDivs {
   display: flex;
   gap: 20px;
 }
 
-.div {
+.toDoDiv {
   border: 1px solid black;
   padding: 20px;
 }
