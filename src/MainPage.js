@@ -14,38 +14,37 @@ import {
 import { getFirebaseConfig } from "./firebase-config";
 
 async function signIn() {
-  // TODO 1: Sign in Firebase with credential from the Google user.
   // Sign in Firebase using popup auth and Google as the identity provider.
   var provider = new GoogleAuthProvider();
   await signInWithPopup(getAuth(), provider);
 }
 
 function signOutUser() {
-  // TODO 2: Sign out of Firebase.
+  // Sign out of Firebase.
   signOut(getAuth());
 }
 
 // Initiate firebase auth
 function initFirebaseAuth() {
-  // TODO 3: Subscribe to the user's signed-in status
+  // Subscribe to the user's signed-in status
   onAuthStateChanged(getAuth(), authStateObserver);
 }
 
 // Returns the signed-in user's profile Pic URL.
 function getProfilePicUrl() {
-  // TODO 4: Return the user's profile pic URL.
+  // Return the user's profile pic URL.
   return getAuth().currentUser.photoURL || '/images/profile_placeholder.png';
 }
 
 // Returns the signed-in user's display name.
 function getUserName() {
-  // TODO 5: Return the user's display name.
+  // Return the user's display name.
   return getAuth().currentUser.displayName;
 }
 
 // Returns true if a user is signed-in.
 // function isUserSignedIn() {
-//   // TODO 6: Return true if a user is signed-in.
+//   // Return true if a user is signed-in.
 //   return !!getAuth().currentUser;
 // }
 
@@ -66,13 +65,13 @@ function getUserName() {
 // }
 
 // Shortcuts to DOM Elements:
-var userPicElement = document.getElementById('user-pic');
-var userNameElement = document.getElementById('user-name');
-var signInButtonElement = document.getElementById('sign-in');
-var signOutButtonElement = document.getElementById('sign-out');
+let userPicElement = document.getElementById('user-pic');
+let userNameElement = document.getElementById('user-name');
+let signInButtonElement = document.getElementById('sign-in');
+let signOutButtonElement = document.getElementById('sign-out');
 signOutButtonElement.addEventListener('click', signOutUser);
 signInButtonElement.addEventListener('click', signIn);
-// var signInSnackbarElement = document.getElementById('must-signin-snackbar');
+// let signInSnackbarElement = document.getElementById('must-signin-snackbar');
 
 // Triggers when the auth state change for instance when the user signs-in or signs-out.
 function authStateObserver(user) {
@@ -114,7 +113,7 @@ import { getMessaging, getToken, onMessage } from 'firebase/messaging';
 
 // Saves the messaging device token to Cloud Firestore.
 async function saveMessagingDeviceToken() {
-  // TODO 10: Save the device token in Cloud Firestore
+  // Save the device token in Cloud Firestore
   try {
     const currentToken = await getToken(getMessaging());
     if (currentToken) {
@@ -142,7 +141,7 @@ async function saveMessagingDeviceToken() {
 
 // Requests permissions to show notifications.
 async function requestNotificationsPermissions() {
-  // TODO 11: Request permissions to send notifications.
+  // Request permissions to send notifications.
   console.log('Requesting notifications permission...');
   const permission = await Notification.requestPermission();
   
